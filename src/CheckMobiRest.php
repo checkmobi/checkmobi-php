@@ -3,9 +3,9 @@
 namespace CheckMobiApi;
 
 if ((@include 'HTTP/Request2.php') == 'OK') 
-    define("CHECKMOBI_USE_CURL", TRUE);
-else
     define("CHECKMOBI_USE_CURL", FALSE);
+else
+    define("CHECKMOBI_USE_CURL", TRUE);
 
 class CheckMobiError extends \Exception { }
 
