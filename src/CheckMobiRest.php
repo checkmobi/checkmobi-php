@@ -157,7 +157,12 @@ class CheckMobiRest
     {
         return $this->request('POST', '/sms/send', $params);
     }
-    
+
+    public function HangUpCall($params)
+    {
+        $validation_id = $this->pop($params, "id");
+        return $this->request('DELETE', '/call/'. $validation_id, FALSE);
+    }
 }
 
 ?>
