@@ -2,10 +2,10 @@
 
 namespace checkmobi;
 
-class CheckMobiError extends \Exception 
+class CheckMobiError extends \Exception
 {
-    
-    
+
+
 }
 
 ?>

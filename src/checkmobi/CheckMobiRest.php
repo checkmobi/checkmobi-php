@@ -6,12 +6,12 @@ use checkmobi\net\RequestInterface;
 
 class CheckMobiRest
 {
-    const BASE_URL = "https://api.checkmobi.com"; 
+    const BASE_URL = "https://api.checkmobi.com";
     const API_VERSION = "v1";
-    
+
     private $http_client;
-    
-    function __construct($auth_token, $engine = RequestInterface::HANDLER_UNKNOWN, $base_url = self::BASE_URL, $version = self::API_VERSION) 
+
+    function __construct($auth_token, $engine = RequestInterface::HANDLER_UNKNOWN, $base_url = self::BASE_URL, $version = self::API_VERSION)
     {
         if ((!isset($auth_token)) || (!$auth_token))
             throw new CheckMobiError("no auth_token specified");
@@ -19,7 +19,7 @@ class CheckMobiRest
         $url = $base_url."/".$version;
         $this->http_client = RequestInterface::Create($url, $auth_token, $engine);
     }
-    
+
     public function GetAccountDetails()
     {
         return $this->http_client->request(RequestInterface::METHOD_GET, '/my-account', FALSE);
@@ -83,8 +83,8 @@ class CheckMobiRest
         $id = $this->pop($params, "id");
         return $this->http_client->request(RequestInterface::METHOD_DELETE, '/call/'. $id, FALSE);
     }
-        
-    private function pop($params, $key) 
+
+    private function pop($params, $key)
     {
         $val = $params[$key];
 

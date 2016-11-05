@@ -15,7 +15,7 @@ php-openssl
 For `HTTP_Request2` :
 
 ```
-pear package HTTP_Request2
+pear install HTTP_Request2-2.3.0
 ```
 
 By default the SDK is checking for `CURL` extension first and then fallbacks to `HTTP_Request2`.
@@ -23,7 +23,7 @@ You can specify the method using the second argument from `CheckMobiRest` constr
 
 #API Documentation
 
-CheckMobi APIs are based on `HTTP` methods, which make it easy to integrate into your own products. 
+CheckMobi APIs are based on `HTTP` methods, which make it easy to integrate into your own products.
 You can use any `HTTP` client in any programming language to interact with the API.
 The SDK is only a wrapper over the REST API described [here][1]
 
