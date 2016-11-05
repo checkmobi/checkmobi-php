@@ -3,22 +3,28 @@ checkmobi-php
 
 #Requirements
 
-You can use `CURL` extension:
+In order to use the library you need to have available one of `CURL` extension or `HTTP_Request2`:
+
+For `CURL`:
 
 ```
 php-curl
 php-openssl
 ```
 
-Or instead `CURL` you can use `HTTP_Request2`
+For `HTTP_Request2` :
 
 ```
 pear package HTTP_Request2
 ```
 
+By default the SDK is checking for `CURL` extension first and then fallbacks to `HTTP_Request2`.
+You can specify the method using the second argument from `CheckMobiRest` constructor.
+
 #API Documentation
 
-CheckMobi APIs are based on `HTTP` methods, which make it easy to integrate into your own products. You can use any `HTTP` client in any programming language to interact with the API.
+CheckMobi APIs are based on `HTTP` methods, which make it easy to integrate into your own products. 
+You can use any `HTTP` client in any programming language to interact with the API.
 The SDK is only a wrapper over the REST API described [here][1]
 
 #Basic Usage for SDK:
@@ -33,6 +39,10 @@ $api = new CheckMobiRest("secret key here");
 //get list of countries & flags
 
 $response = $api->GetCountriesList();
+
+//get account details
+
+$response = $api->GetAccountDetails();
 
 //get prefixes
 

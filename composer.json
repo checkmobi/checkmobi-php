@@ -1,0 +1,24 @@
+{
+    "name": "checkmobi/checkmobi-php",
+    "type": "library",
+    "description": "CheckMobi SDK for PHP",
+    "keywords": ["checkmobi", "number validation"],
+    "homepage": "https://github.com/checkmobi/checkmobi-php",
+    "license" : "BSD",
+    "authors" : [
+        {
+            "name": "CheckMobi Team",
+            "email": "support@checkmobi.com",
+            "homepage": "https://checkmobi.com/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "checkmobi": "src/"
+        }
+    }
+}
