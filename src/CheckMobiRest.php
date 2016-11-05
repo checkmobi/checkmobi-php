@@ -127,6 +127,11 @@ class CheckMobiRest
         return $val;
     }
 
+    public function GetAccountDetails()
+    {
+        return $this->request('GET', '/my-account', FALSE);
+    }
+
     public function GetCountriesList()
     {
         return $this->request('GET', '/countries', FALSE);
