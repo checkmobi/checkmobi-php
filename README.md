@@ -21,6 +21,14 @@ pear install HTTP_Request2-2.3.0
 By default the SDK is checking for `CURL` extension first and then fallbacks to `HTTP_Request2`.
 You can specify the method using the second argument from `CheckMobiRest` constructor.
 
+#Installation
+
+The SDk can be installed using `Composer`:
+
+```sh
+composer require  checkmobi/checkmobi-php
+```
+
 #API Documentation
 
 CheckMobi APIs are based on `HTTP` methods, which make it easy to integrate into your own products.
@@ -32,7 +40,10 @@ The SDK is only a wrapper over the REST API described [here][1]
 For all properties accepted by the following methods check [the documentation][1].
 
 ```php
+
 //create an instance of `CheckMobiRest`
+
+use checkmobi\CheckMobiRest;
 
 $api = new CheckMobiRest("secret key here");
 
