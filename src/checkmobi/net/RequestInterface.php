@@ -35,7 +35,7 @@ abstract class RequestInterface
     }
 
     public abstract function request($method, $path, $params = FALSE);
-    public abstract static function IsAvailable();
+    public static function IsAvailable();
 
 
     public static function Create($base_url, $auth_token, $engine = self::HANDLER_UNKNOWN)
