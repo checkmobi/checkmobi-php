@@ -69,5 +69,3 @@ class HttpRequest2Handler extends RequestInterface
     }
 
 }
-
-?>
