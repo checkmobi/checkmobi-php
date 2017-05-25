@@ -63,5 +63,3 @@ abstract class RequestInterface implements RequestInterfaceInterface
     }
 
 }
-
-?>

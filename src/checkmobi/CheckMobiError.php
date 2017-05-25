@@ -7,5 +7,3 @@ class CheckMobiError extends \Exception
 
 
 }
-
-?>
