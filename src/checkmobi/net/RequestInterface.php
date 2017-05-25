@@ -4,7 +4,7 @@ namespace checkmobi\net;
 
 use checkmobi\CheckMobiError;
 
-abstract class RequestInterface
+abstract class RequestInterface implements RequestInterfaceInterface
 {
     //methods
 
@@ -33,10 +33,6 @@ abstract class RequestInterface
     {
         return $this->base_url.$path;
     }
-
-    public abstract function request($method, $path, $params = FALSE);
-    public abstract static function IsAvailable();
-
 
     public static function Create($base_url, $auth_token, $engine = self::HANDLER_UNKNOWN)
     {
