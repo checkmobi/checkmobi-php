@@ -4,7 +4,7 @@ namespace checkmobi\net;
 
 use checkmobi\CheckMobiError;
 
-abstract class RequestInterface implements RequestInterfaceInterface
+abstract class RequestInterface implements IRequestInterface
 {
     //methods
 
