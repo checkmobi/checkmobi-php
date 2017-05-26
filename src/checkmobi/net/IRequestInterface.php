@@ -1,7 +1,7 @@
 <?php
 namespace checkmobi\net;
 
-interface RequestInterfaceInterface
+interface IRequestInterface
 {
     public function request($method, $path, $params = FALSE);
 
