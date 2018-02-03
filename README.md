@@ -1,7 +1,7 @@
 checkmobi-php
 =================
 
-#Requirements
+# Requirements
 
 In order to use the library you need to have available one of `CURL` extension or `HTTP_Request2`:
 
@@ -21,7 +21,7 @@ pear install HTTP_Request2-2.3.0
 By default the SDK is checking for `CURL` extension first and then fallbacks to `HTTP_Request2`.
 You can specify the method using the second argument from `CheckMobiRest` constructor.
 
-#Installation
+# Installation
 
 The SDk can be installed using `Composer`:
 
@@ -29,13 +29,13 @@ The SDk can be installed using `Composer`:
 composer require  checkmobi/checkmobi-php
 ```
 
-#API Documentation
+# API Documentation
 
 CheckMobi APIs are based on `HTTP` methods, which make it easy to integrate into your own products.
 You can use any `HTTP` client in any programming language to interact with the API.
 The SDK is only a wrapper over the REST API described [here][1]
 
-#Basic Usage for SDK:
+# Basic Usage for SDK:
 
 For all properties accepted by the following methods check [the documentation][1].
 
