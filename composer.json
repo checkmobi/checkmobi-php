@@ -4,7 +4,7 @@
     "description": "CheckMobi SDK for PHP",
     "keywords": ["checkmobi", "number validation"],
     "homepage": "https://github.com/checkmobi/checkmobi-php",
-    "license" : "BSD",
+    "license" : "MIT",
     "authors" : [
         {
             "name": "CheckMobi Team",
