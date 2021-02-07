@@ -109,6 +109,16 @@ class CheckMobiRest
      * @param array $params
      * @return CheckMobiResponse
      */
+
+    public function GetRemoteConfigProfile($params)
+    {
+        return $this->http_client->request(RequestInterface::METHOD_POST, '/validation/remote-config', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return CheckMobiResponse
+     */
     public function SendSMS($params)
     {
         return $this->http_client->request(RequestInterface::METHOD_POST, '/sms/send', $params);

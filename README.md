@@ -75,7 +75,7 @@ $response = $client->GetPrefixes();
 
 //checking a number for being valid
 
-$response = $client->CheckNumber(array("number" => "+number here"));
+$response = $client->CheckNumber(array("number" => "+number_here"));
 
 //validate a number using "Missed call method". (type can be : sms, ivr, cli, reverse_cli)
 
@@ -89,9 +89,13 @@ $response = $client->VerifyPin(array("id" => "request id here", "pin" => "5659")
 
 $response = $client->ValidationStatus(array("id" => "request id here"));
 
+// get remote config profile
+
+$response = $client->GetRemoteConfigProfile(array("number" => "+number_here", "platform" => "android"));
+
 //send a custom sms
 
-$response = $client->SendSMS(array("to" => "number here", "text" => "message here"));
+$response = $client->SendSMS(array("to" => "+number_here", "text" => "message here"));
 
 //get details about an SMS
 
@@ -100,8 +104,8 @@ $response = $client->GetSmsDetails(array("id" => "sms id here"));
 //place a call
 
 $params = [
-    "from" => "+number here", 
-    "to" => "+number here", 
+    "from" => "+source_number_here", 
+    "to" => "+destination_number_here", 
     "events" => [
         ["action" => "speak", "text" => "Hello world", "loop" => 2, "language" => "en-US"]
     ]
