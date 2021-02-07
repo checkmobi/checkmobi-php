@@ -1,6 +1,13 @@
 checkmobi-php
 =================
 
+# Updating from 1.1
+
+Starting from version 1.2 the API changed as follow:
+
+- All requests will return a response of `CheckMobiResponse` type instead of an array.
+- `CheckMobiRest` constructor now receives as a second parameter an array of additional options.
+
 # Requirements
 
 In order to use the library you need to have available one of `CURL` extension or `HTTP_Request2`:
@@ -118,7 +125,7 @@ The response it's an object of the `CheckMobiResponse` type which exposes the fo
 |--------------|--------------------|
 | is_success   | `boolean` - returns if the response represents an error or not.|
 | status_code  | `integer` - the HTTP status code received.|
-| payload     | `array` - The json decoded response payload as received from the server.|
+| payload     | `array` or `NULL` - The json decoded response payload as received from the server.|
 
 **Example**:
 
