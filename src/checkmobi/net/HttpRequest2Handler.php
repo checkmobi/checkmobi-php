@@ -5,7 +5,9 @@ namespace checkmobi\net;
 @include_once 'HTTP/Request2.php';
 
 use checkmobi\CheckMobiError;
+use checkmobi\CheckMobiResponse;
 use \HTTP_Request2;
+use \HTTP_Request2_Exception;
 
 class HttpRequest2Handler extends RequestInterface
 {
@@ -14,41 +16,56 @@ class HttpRequest2Handler extends RequestInterface
     private $has_curl;
     private $config;
 
-    public function __construct($base_url, $auth_token, $curl)
+    public function __construct($base_url, $auth_token, $has_curl, $options)
     {
-        parent::__construct($base_url, $auth_token);
+        parent::__construct($base_url, $auth_token, $options);
 
-        $this->has_curl = $curl;
+        $this->has_curl = $has_curl;
         $this->config = array(
             'timeout' => $this->timeout_sec,
             'connect_timeout' => $this->timeout_sec,
-            'ssl_verify_peer' => $this->ssl_verify_peer);
+            'ssl_verify_peer' => $this->ssl_verify_peer
+        );
+    }
+
+    public static function IsAvailable()
+    {
+        return class_exists("HTTP_Request2");
     }
 
     public function request($method, $path, $params = FALSE)
     {
-        $http_method = self::GetMethod($method);
+        try
+        {
+            $http_method = self::GetMethod($method);
 
-        $req = new HTTP_Request2($this->GetUrl($path), $http_method);
+            if($http_method === false)
+                return new CheckMobiResponse(0, ["code" => -1, "error" => "Unsupported HTTP method: '".$method."'"]);
 
-        if ($http_method === HTTP_Request2::METHOD_POST && is_array($params))
-            $req->setBody(json_encode($params));
+            $req = new HTTP_Request2($this->GetUrl($path), $http_method);
 
-        if($this->has_curl)
-            $req->setAdapter('curl');
+            if ($http_method === HTTP_Request2::METHOD_POST && is_array($params))
+                $req->setBody(json_encode($params));
 
-        $req->setConfig($this->config);
+            if($this->has_curl)
+                $req->setAdapter('curl');
 
-        $req->setHeader(array('Authorization' => $this->auth_token,
-                              'Connection' => 'close',
-                              'User-Agent' => self::USER_AGENT,
-                              'Content-type' => 'application/json'));
+            $req->setConfig($this->config);
 
-        $r = $req->send();
-        $status = $r->getStatus();
-        $body = $r->getbody();
-        $response = json_decode($body, true);
-        return array("status" => $status, "response" => $response);
+            $req->setHeader(array(
+                'Authorization' => $this->auth_token,
+                'Connection' => 'close',
+                'User-Agent' => self::USER_AGENT,
+                'Content-type' => 'application/json'
+            ));
+
+            $r = $req->send();
+            return new CheckMobiResponse($r->getStatus(), json_decode($r->getbody(), true));
+        }
+        catch (HTTP_Request2_Exception $ex)
+        {
+            return new CheckMobiResponse(0, ["code" => -1, "error" => $ex->getMessage()]);
+        }
     }
 
     private static function GetMethod($method)
@@ -60,12 +77,6 @@ class HttpRequest2Handler extends RequestInterface
         else if ($method  == RequestInterface::METHOD_DELETE)
             return HTTP_Request2::METHOD_DELETE;
 
-        throw new CheckMobiError("Unavailable method: ".$method);
+        return false;
     }
-
-    public static function IsAvailable()
-    {
-        return class_exists("HTTP_Request2");
-    }
-
 }

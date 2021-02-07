@@ -2,7 +2,7 @@
     "name": "checkmobi/checkmobi-php",
     "type": "library",
     "description": "CheckMobi SDK for PHP",
-    "keywords": ["checkmobi", "number validation"],
+    "keywords": ["checkmobi", "sms", "ivr", "two factor authentication", "missed call"],
     "homepage": "https://github.com/checkmobi/checkmobi-php",
     "license" : "MIT",
     "authors" : [

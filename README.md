@@ -15,88 +15,124 @@ php-openssl
 For `HTTP_Request2` :
 
 ```
-pear install HTTP_Request2-2.3.0
+pear install HTTP_Request2
 ```
 
 By default the SDK is checking for `CURL` extension first and then fallbacks to `HTTP_Request2`.
-You can specify the method using the second argument from `CheckMobiRest` constructor.
+You can specify the transport method using the constructor `options` parameter.
 
 # Installation
 
-The SDk can be installed using `Composer`:
+The SDK can be installed using `Composer`:
 
 ```sh
 composer require  checkmobi/checkmobi-php
 ```
 
-# API Documentation
+# Get started
 
-CheckMobi APIs are based on `HTTP` methods, which make it easy to integrate into your own products.
-You can use any `HTTP` client in any programming language to interact with the API.
-The SDK is only a wrapper over the REST API described [here][1]
+### Create the CheckMobiRest client
 
-# Basic Usage for SDK:
+```php
+use checkmobi\CheckMobiRest;
+$client = new CheckMobiRest("secret key here");
+```
 
-For all properties accepted by the following methods check [the documentation][1].
+In case you want to change the default behaviours you can use as second constructor parameter the `options` array with the following properties:
+
+| Property       | Default      |  Description |
+|----------------|--------------|--------------------|
+| api.base_url   | https://api.checkmobi.com| API endpoint|
+| api.version   | v1 | API endpoint version|
+| net.transport   | `RequestInterface::HANDLER_DEFAULT` | Transport engine: `RequestInterface::HANDLER_DEFAULT` - will try to use `CURL` if available otherwise fallbacks on `HTTP_Request2`, `RequestInterface::HANDLER_CURL` will force CURL instantiation, if fails will trigger an exception, `RequestInterface::HANDLER_HTTP2` will force `HTTP_Request2` instantiation, if fails will trigger an exception.|
+| net.timeout   | 30 | Connection and request timeout in seconds.|
+| net.ssl_verify_peer| true| Indicates if the server certificate is verified or not before transmitting any data.|
+
+### Resources
+
+The SDK is a wrapper over the REST API described [here][1]. For all properties accepted by the following methods check [the documentation][1].
 
 ```php
 
-//create an instance of `CheckMobiRest`
-
-use checkmobi\CheckMobiRest;
-
-$api = new CheckMobiRest("secret key here");
-
 //get list of countries & flags
 
-$response = $api->GetCountriesList();
+$response = $client->GetCountriesList();
 
 //get account details
 
-$response = $api->GetAccountDetails();
+$response = $client->GetAccountDetails();
 
 //get prefixes
 
-$response = $api->GetPrefixes();
+$response = $client->GetPrefixes();
 
 //checking a number for being valid
 
-$response = $api->CheckNumber(array("number" => "+number here"));
+$response = $client->CheckNumber(array("number" => "+number here"));
 
 //validate a number using "Missed call method". (type can be : sms, ivr, cli, reverse_cli)
 
-$response = $api->RequestValidation(array("type" => "reverse_cli", "number" => "+number_here"));
+$response = $client->RequestValidation(array("type" => "reverse_cli", "number" => "+number_here"));
 
 //verify a pin for a certain request
 
-$response = $api->VerifyPin(array("id" => "request id here", "pin" => "5659"));
+$response = $client->VerifyPin(array("id" => "request id here", "pin" => "5659"));
 
 //check validation status for a certain request
 
-$response = $api->ValidationStatus(array("id" => "request id here"));
+$response = $client->ValidationStatus(array("id" => "request id here"));
 
 //send a custom sms
 
-$response = $api->SendSMS(array("to" => "number here", "text" => "message here"));
+$response = $client->SendSMS(array("to" => "number here", "text" => "message here"));
 
 //get details about an SMS
 
-$response = $api->GetSmsDetails(array("id" => "sms id here"));
+$response = $client->GetSmsDetails(array("id" => "sms id here"));
 
 //place a call
 
-$event = [["action" => "speak", "text" => "Hello world", "loop" => 2, "language" => "en-US"]];
-$params = ["from" => "+number here", "to" => "+number here", "events" => $event];
-$response = $api->PlaceCall($params);
+$params = [
+    "from" => "+number here", 
+    "to" => "+number here", 
+    "events" => [
+        ["action" => "speak", "text" => "Hello world", "loop" => 2, "language" => "en-US"]
+    ]
+];
+$response = $client->PlaceCall($params);
 
 //get a call details
 
-$response = $api->GetCallDetails(array("id" => "call id here"));
+$response = $client->GetCallDetails(array("id" => "call id here"));
 
 //hangup a call
 
-$response = $api->HangUpCall(array("id" => "call id here"));
-
+$response = $client->HangUpCall(array("id" => "call id here"));
 ```
 
-[1]:https://checkmobi.com/documentation.html
+### Response handling
+
+The response it's an object of the `CheckMobiResponse` type which exposes the following methods:
+
+| Method       |  Description |
+|--------------|--------------------|
+| is_success   | `boolean` - returns if the response represents an error or not.|
+| status_code  | `integer` - the HTTP status code received.|
+| payload     | `array` - The json decoded response payload as received from the server.|
+
+**Example**:
+
+```php
+
+if($response->is_success()) {
+    // success 
+    print_r($response->payload());
+}
+else
+{
+    // failure
+    print "error code: ".$response->payload()["code"]." error message: ".$response->payload()["error"];
+}
+```
+
+[1]:https://checkmobi.com/documentation

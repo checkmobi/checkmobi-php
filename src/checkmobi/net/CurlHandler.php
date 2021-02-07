@@ -3,6 +3,7 @@
 namespace checkmobi\net;
 
 use checkmobi\CheckMobiError;
+use checkmobi\CheckMobiResponse;
 
 class CurlHandler extends RequestInterface
 {
@@ -10,9 +11,9 @@ class CurlHandler extends RequestInterface
 
     private $ch;
 
-    function __construct($base_url, $auth_token)
+    function __construct($base_url, $auth_token, $options)
     {
-        parent::__construct($base_url, $auth_token);
+        parent::__construct($base_url, $auth_token, $options);
 
         $this->ch = curl_init();
 
@@ -26,10 +27,15 @@ class CurlHandler extends RequestInterface
             curl_close($this->ch);
     }
 
+    public static function IsAvailable()
+    {
+        return function_exists('curl_version');
+    }
+
     public function request($method, $path, $params = FALSE)
     {
         if (curl_errno($this->ch))
-            return array("status" => 0, "response" => array("error" => curl_error($this->ch)));
+            return new CheckMobiResponse(0, ["code" => -1, "error" => curl_error($this->ch)]);
 
         curl_reset($this->ch);
 
@@ -64,21 +70,11 @@ class CurlHandler extends RequestInterface
         curl_setopt_array($this->ch, $options);
         $res = curl_exec($this->ch);
 
-        $status = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
-
         if ($res === FALSE)
-        {
-            $err = curl_error($this->ch);
-            return array("status" => $status, "response" => array("error" => $err));
-        }
+            return new CheckMobiResponse(0, ["code" => -1, "error" => curl_error($this->ch)]);
 
-        $result = json_decode($res, TRUE);
-        return array("status" => $status, "response" => $result);
-    }
-
-    public static function IsAvailable()
-    {
-        return function_exists('curl_version');
+        $status = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
+        return new CheckMobiResponse($status, json_decode($res, TRUE));
     }
 
 }
