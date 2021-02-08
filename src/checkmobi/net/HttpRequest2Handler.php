@@ -11,7 +11,7 @@ use \HTTP_Request2_Exception;
 
 class HttpRequest2Handler extends RequestInterface
 {
-    const USER_AGENT = "checkmobi/http2_request";
+    const USER_AGENT = "checkmobi/php-http2_request";
 
     private $has_curl;
     private $config;
@@ -33,7 +33,7 @@ class HttpRequest2Handler extends RequestInterface
         return class_exists("HTTP_Request2");
     }
 
-    public function request($method, $path, $params = FALSE)
+    public function request($method, $path, $params = false, $client_ip = false)
     {
         try
         {
@@ -52,13 +52,16 @@ class HttpRequest2Handler extends RequestInterface
 
             $req->setConfig($this->config);
 
-            $req->setHeader(array(
+            $headers = array(
                 'Authorization' => $this->auth_token,
                 'Connection' => 'close',
                 'User-Agent' => self::USER_AGENT,
-                'Content-type' => 'application/json'
-            ));
+                'Content-type' => 'application/json');
 
+            if($client_ip !== false)
+                array_push($headers, "X-Client-IP: ".$client_ip);
+
+            $req->setHeader($headers);
             $r = $req->send();
             return new CheckMobiResponse($r->getStatus(), json_decode($r->getbody(), true));
         }

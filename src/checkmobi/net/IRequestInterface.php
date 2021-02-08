@@ -10,9 +10,10 @@ interface IRequestInterface
      * @param string $method
      * @param string $path
      * @param false|array $params
+     * @param false|string $client_ip
      * @return CheckMobiResponse
      */
-    public function request($method, $path, $params = FALSE);
+    public function request($method, $path, $params = false, $client_ip = false);
 
     /**
      * @return boolean

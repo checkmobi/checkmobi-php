@@ -21,7 +21,7 @@ abstract class RequestInterface implements IRequestInterface
     protected $base_url;
     protected $auth_token;
     protected $timeout_sec = 30;
-    protected $ssl_verify_peer = TRUE;
+    protected $ssl_verify_peer = true;
 
     function __construct($base_url, $auth_token, $options = array())
     {

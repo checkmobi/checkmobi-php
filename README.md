@@ -1,9 +1,9 @@
 checkmobi-php
 =================
 
-# Updating from 1.1
+# Upgrading from 1.1
 
-Starting from version 1.2 the API changed as follow:
+Starting with version 1.2 the API changed as follow:
 
 - All requests will return a response of `CheckMobiResponse` type instead of an array.
 - `CheckMobiRest` constructor now receives as a second parameter an array of additional options.
@@ -45,15 +45,24 @@ use checkmobi\CheckMobiRest;
 $client = new CheckMobiRest("secret key here");
 ```
 
-In case you want to change the default behaviours you can use as second constructor parameter the `options` array with the following properties:
+In case you want to change the default behaviours of the library you can use the `options` array properties:
 
-| Property       | Default      |  Description |
-|----------------|--------------|--------------------|
-| api.base_url   | https://api.checkmobi.com| API endpoint|
-| api.version   | v1 | API endpoint version|
-| net.transport   | `RequestInterface::HANDLER_DEFAULT` | Transport engine: `RequestInterface::HANDLER_DEFAULT` - will try to use `CURL` if available otherwise fallbacks on `HTTP_Request2`, `RequestInterface::HANDLER_CURL` will force CURL instantiation, if fails will trigger an exception, `RequestInterface::HANDLER_HTTP2` will force `HTTP_Request2` instantiation, if fails will trigger an exception.|
-| net.timeout   | 30 | Connection and request timeout in seconds.|
-| net.ssl_verify_peer| true| Indicates if the server certificate is verified or not before transmitting any data.|
+| Property       | Default                     |  Description        |
+|----------------|-----------------------------|---------------------|
+| api.base_url   | https://api.checkmobi.com   |  API endpoint.       |
+| api.version    | v1                          | API endpoint version.|
+| net.transport  | `RequestInterface::HANDLER_DEFAULT` | Transport engine: `RequestInterface::HANDLER_DEFAULT` - will try to use `CURL` if available otherwise fallbacks to `HTTP_Request2`, `RequestInterface::HANDLER_CURL` will force to use CURL, if fails will trigger an exception, `RequestInterface::HANDLER_HTTP2` will force `HTTP_Request2` instantiation, if fails will trigger an exception.|
+| net.timeout    | 30                          | Connection and request timeout in seconds.|
+| net.ssl_verify_peer| true                    | Indicates if the server certificate is verified or not before transmitting any data.|
+
+**Example**:
+
+```php
+$client = new CheckMobiRest("secret key here", [
+    "net.timeout" => 10, 
+    "net.ssl_verify_peer" => false
+]);
+```
 
 ### Resources
 
@@ -146,4 +155,4 @@ else
 }
 ```
 
-[1]:https://checkmobi.com/documentation
+[1]:https://checkmobi.com/documentation/api-reference/

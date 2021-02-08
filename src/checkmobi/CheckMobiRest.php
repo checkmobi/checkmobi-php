@@ -45,7 +45,7 @@ class CheckMobiRest
      */
     public function GetAccountDetails()
     {
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/my-account', FALSE);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/my-account', false);
     }
 
     /**
@@ -53,7 +53,7 @@ class CheckMobiRest
      */
     public function GetCountriesList()
     {
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/countries', FALSE);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/countries', false);
     }
 
     /**
@@ -61,7 +61,7 @@ class CheckMobiRest
      */
     public function GetPrefixes()
     {
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/prefixes', FALSE);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/prefixes', false);
     }
 
     /**
@@ -75,11 +75,12 @@ class CheckMobiRest
 
     /**
      * @param array $params
+     * @param string|false $client_ip
      * @return CheckMobiResponse
      */
-    public function RequestValidation($params)
+    public function RequestValidation($params, $client_ip = false)
     {
-        return $this->http_client->request(RequestInterface::METHOD_POST, '/validation/request', $params);
+        return $this->http_client->request(RequestInterface::METHOD_POST, '/validation/request', $params, $client_ip);
     }
 
     /**
@@ -102,7 +103,7 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/validation/status/'.$id, FALSE);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/validation/status/'.$id, false);
     }
 
     /**
@@ -117,11 +118,12 @@ class CheckMobiRest
 
     /**
      * @param array $params
+     * @param string|false $client_ip
      * @return CheckMobiResponse
      */
-    public function SendSMS($params)
+    public function SendSMS($params, $client_ip = false)
     {
-        return $this->http_client->request(RequestInterface::METHOD_POST, '/sms/send', $params);
+        return $this->http_client->request(RequestInterface::METHOD_POST, '/sms/send', $params, $client_ip);
     }
 
     /**
@@ -135,16 +137,17 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/sms/'.$id, FALSE);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/sms/'.$id, false);
     }
 
     /**
      * @param array $params
+     * @param string|false $client_ip
      * @return CheckMobiResponse
      */
-    public function PlaceCall($params)
+    public function PlaceCall($params, $client_ip = false)
     {
-        return $this->http_client->request(RequestInterface::METHOD_POST, '/call', $params);
+        return $this->http_client->request(RequestInterface::METHOD_POST, '/call', $params, $client_ip);
     }
 
     /**
@@ -158,7 +161,7 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/call/'.$id, FALSE);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/call/'.$id, false);
     }
 
     /**
@@ -172,7 +175,7 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_DELETE, '/call/'. $id, FALSE);
+        return $this->http_client->request(RequestInterface::METHOD_DELETE, '/call/'. $id, false);
     }
 
     private function get_param($params, $key)
