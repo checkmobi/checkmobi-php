@@ -17,9 +17,7 @@ class CheckMobiRest
     /**
      * CheckMobiRest constructor.
      * @param string $auth_token
-     * @param int $engine
-     * @param string $base_url
-     * @param string $version
+     * @param array $options
      * @throws CheckMobiError
      */
 
@@ -45,7 +43,7 @@ class CheckMobiRest
      */
     public function GetAccountDetails()
     {
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/my-account', false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/my-account');
     }
 
     /**
@@ -53,7 +51,7 @@ class CheckMobiRest
      */
     public function GetCountriesList()
     {
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/countries', false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/countries');
     }
 
     /**
@@ -61,7 +59,7 @@ class CheckMobiRest
      */
     public function GetPrefixes()
     {
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/prefixes', false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/prefixes');
     }
 
     /**
@@ -95,7 +93,7 @@ class CheckMobiRest
         if($number === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'number' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/verify/'.$number, false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/verify/'.$number);
     }
 
     /**
@@ -109,7 +107,7 @@ class CheckMobiRest
         if($number === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'number' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/hlr/'.$number, false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/hlr/'.$number);
     }
 
 	/**
@@ -123,7 +121,7 @@ class CheckMobiRest
         if($number === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'number' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/mnp/'.$number, false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/mnp/'.$number);
     }
 
     /**
@@ -146,7 +144,7 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/validation/status/'.$id, false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/validation/status/'.$id);
     }
 
     /**
@@ -180,7 +178,7 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/sms/'.$id, false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/sms/'.$id);
     }
 
     /**
@@ -204,7 +202,7 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_GET, '/call/'.$id, false);
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/call/'.$id);
     }
 
     /**
@@ -218,7 +216,7 @@ class CheckMobiRest
         if($id === false)
             return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'id' not found."]);
 
-        return $this->http_client->request(RequestInterface::METHOD_DELETE, '/call/'. $id, false);
+        return $this->http_client->request(RequestInterface::METHOD_DELETE, '/call/'. $id);
     }
 
     private function get_param($params, $key)

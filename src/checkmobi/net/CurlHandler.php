@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpComposerExtensionStubsInspection */
+
 namespace checkmobi\net;
 
 use checkmobi\CheckMobiError;
@@ -11,6 +13,9 @@ class CurlHandler extends RequestInterface
 
     private $ch;
 
+    /**
+     * @throws CheckMobiError
+     */
     function __construct($base_url, $auth_token, $options)
     {
         parent::__construct($base_url, $auth_token, $options);
@@ -54,7 +59,7 @@ class CurlHandler extends RequestInterface
         $headers = array('Authorization: '.$this->auth_token);
 
         if($client_ip !== false)
-            array_push($headers, "X-Client-IP: ".$client_ip);
+            $headers[] = "X-Client-IP: " . $client_ip;
 
         if ($method === RequestInterface::METHOD_POST)
         {
@@ -64,8 +69,8 @@ class CurlHandler extends RequestInterface
             {
                 $json_params = json_encode($params);
                 $options[CURLOPT_POSTFIELDS] = $json_params;
-                array_push($headers, "Content-Type: application/json");
-                array_push($headers, 'Content-Length: '.strlen($json_params));
+                $headers[] = "Content-Type: application/json";
+                $headers[] = 'Content-Length: ' . strlen($json_params);
             }
         }
 

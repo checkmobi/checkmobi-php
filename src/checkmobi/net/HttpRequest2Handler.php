@@ -4,10 +4,9 @@ namespace checkmobi\net;
 
 @include_once 'HTTP/Request2.php';
 
-use checkmobi\CheckMobiError;
 use checkmobi\CheckMobiResponse;
-use \HTTP_Request2;
-use \HTTP_Request2_Exception;
+use HTTP_Request2;
+use HTTP_Request2_Exception;
 
 class HttpRequest2Handler extends RequestInterface
 {
@@ -59,7 +58,7 @@ class HttpRequest2Handler extends RequestInterface
                 'Content-type' => 'application/json');
 
             if($client_ip !== false)
-                array_push($headers, "X-Client-IP: ".$client_ip);
+                $headers[] = "X-Client-IP: " . $client_ip;
 
             $req->setHeader($headers);
             $r = $req->send();
