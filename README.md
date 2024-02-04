@@ -1,34 +1,32 @@
-checkmobi-php
-=================
+# checkmobi-php
 
-# Upgrading from 1.1
+The official SDK for integrating with the [CheckMobi API][1]. CheckMobi is a service that provides affordable services like: 
+- Two-factor authentication via SMS, Missed Call, and IVR
+- SMS API for marketing and transactional notifications.
+- Voice API for creating custom IVRs.
 
-Starting with version 1.2 the API changed as follow:
+This PHP SDK makes it easy for developers to add CheckMobi's features like SMS and Voice to their PHP apps without much hassle.
 
-- All requests will return a response of `CheckMobiResponse` type instead of an array.
-- `CheckMobiRest` constructor now receives as a second parameter an array of additional options.
+## Requirements
 
-# Requirements
+In order to use the library you need to have available one of `CURL` or `HTTP_Request2` extension:
 
-In order to use the library you need to have available one of `CURL` extension or `HTTP_Request2`:
-
-For `CURL`:
+### Using `CURL`
 
 ```
 php-curl
 php-openssl
 ```
 
-For `HTTP_Request2` :
+### Using `HTTP_Request2` :
 
 ```
 pear install HTTP_Request2
 ```
 
-By default the SDK is checking for `CURL` extension first and then fallbacks to `HTTP_Request2`.
-You can specify the transport method using the constructor `options` parameter.
+The SDK initially checks for the `CURL` extension and then falls back to `HTTP_Request2` if necessary. You can set the transport method using the constructor's `options` parameter.
 
-# Installation
+## Installation
 
 The SDK can be installed using `Composer`:
 
@@ -36,7 +34,7 @@ The SDK can be installed using `Composer`:
 composer require  checkmobi/checkmobi-php
 ```
 
-# Get started
+## Get started
 
 ### Create the CheckMobiRest client
 
@@ -47,15 +45,15 @@ $client = new CheckMobiRest("secret key here");
 
 In case you want to change the default behaviours of the library you can use the `options` array properties:
 
-| Property       | Default                     |  Description        |
-|----------------|-----------------------------|---------------------|
-| api.base_url   | https://api.checkmobi.com   |  API endpoint.       |
-| api.version    | v1                          | API endpoint version.|
-| net.transport  | `RequestInterface::HANDLER_DEFAULT` | Transport engine: `RequestInterface::HANDLER_DEFAULT` - will try to use `CURL` if available otherwise fallbacks to `HTTP_Request2`, `RequestInterface::HANDLER_CURL` will force to use CURL, if fails will trigger an exception, `RequestInterface::HANDLER_HTTP2` will force `HTTP_Request2` instantiation, if fails will trigger an exception.|
-| net.timeout    | 30                          | Connection and request timeout in seconds.|
-| net.ssl_verify_peer| true                    | Indicates if the server certificate is verified or not before transmitting any data.|
+| Property       | Default                     | Description                                                                                                                                                                                                                                                                                                                                      |
+|----------------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| api.base_url   | https://api.checkmobi.com   | API endpoint.                                                                                                                                                                                                                                                                                                                                    |
+| api.version    | v1                          | API endpoint version.                                                                                                                                                                                                                                                                                                                            |
+| net.transport  | `RequestInterface::HANDLER_DEFAULT` | Transport engine: `RequestInterface::HANDLER_DEFAULT` - will try to use `CURL` if available otherwise fallbacks to `HTTP_Request2`, `RequestInterface::HANDLER_CURL` will force to use CURL, if fails will trigger an exception, `RequestInterface::HANDLER_HTTP2` will force `HTTP_Request2` instantiation, if fails will trigger an exception. |
+| net.timeout    | 30                          | Connection and request timeout in seconds.                                                                                                                                                                                                                                                                                                       |
+| net.ssl_verify_peer| true                    | Indicates if the server certificate is verified or not before transmitting any data.                                                                                                                                                                                                                                                             |
 
-**Example**:
+#### Example
 
 ```php
 $client = new CheckMobiRest("secret key here", [
@@ -70,31 +68,31 @@ The SDK is a wrapper over the REST API described [here][1]. For all properties a
 
 ```php
 
-//get list of countries & flags
+// get list of countries & flags
 
 $response = $client->GetCountriesList();
 
-//get account details
+// get account details
 
 $response = $client->GetAccountDetails();
 
-//get prefixes
+// get prefixes
 
 $response = $client->GetPrefixes();
 
-//checking a number for being valid
+// checking a number for being valid
 
 $response = $client->CheckNumber(array("number" => "+number_here"));
 
-//validate a number using "Missed call method". (type can be : sms, ivr, cli, reverse_cli)
+// validate a number using "Missed call method". (type can be : sms, ivr, reverse_cli)
 
 $response = $client->RequestValidation(array("type" => "reverse_cli", "number" => "+number_here"));
 
-//verify a pin for a certain request
+// verify a pin for a certain request
 
 $response = $client->VerifyPin(array("id" => "request id here", "pin" => "5659"));
 
-//check validation status for a certain request
+// check validation status for a certain request
 
 $response = $client->ValidationStatus(array("id" => "request id here"));
 
@@ -102,15 +100,15 @@ $response = $client->ValidationStatus(array("id" => "request id here"));
 
 $response = $client->GetRemoteConfigProfile(array("number" => "+number_here", "platform" => "android"));
 
-//send a custom sms
+// send a custom sms
 
 $response = $client->SendSMS(array("to" => "+number_here", "text" => "message here"));
 
-//get details about an SMS
+// get sms details
 
 $response = $client->GetSmsDetails(array("id" => "sms id here"));
 
-//place a call
+// place call
 
 $params = [
     "from" => "+source_number_here", 
@@ -121,26 +119,39 @@ $params = [
 ];
 $response = $client->PlaceCall($params);
 
-//get a call details
+// get call details
 
 $response = $client->GetCallDetails(array("id" => "call id here"));
 
-//hangup a call
+// hangup call
 
 $response = $client->HangUpCall(array("id" => "call id here"));
+
+// perform HLR Lookup
+
+$response = $client->HLRLookup(["number"=> "+number here"]);
+
+// perform MNP Lookup
+
+$response = $client->MNPLookup(["number"=> "+number here"]);
+
+// perform number verification
+
+$response = $client->VerifyLookup(["number"=> "+number here"]);
+
 ```
 
 ### Response handling
 
 The response it's an object of the `CheckMobiResponse` type which exposes the following methods:
 
-| Method       |  Description |
-|--------------|--------------------|
-| is_success   | `boolean` - returns if the response represents an error or not.|
-| status_code  | `integer` - the HTTP status code received.|
-| payload     | `array` or `NULL` - The json decoded response payload as received from the server.|
+| Method        | Description                                                                        |
+|---------------|------------------------------------------------------------------------------------|
+| is_success    | `boolean` - returns if the response represents an error or not.                    |
+| status_code   | `integer` - the HTTP status code received.                                         |
+| payload       | `array` or `NULL` - The json decoded response payload as received from the server. |
 
-**Example**:
+#### Example
 
 ```php
 
