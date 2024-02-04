@@ -87,6 +87,34 @@ class CheckMobiRest
      * @param array $params
      * @return CheckMobiResponse
      */
+    public function HLRLookup($params)
+    {
+        $number = $this->get_param($params, "number");
+
+        if($number === false)
+            return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'number' not found."]);
+
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/hlr/'.$number, false);
+    }
+
+	/**
+     * @param array $params
+     * @return CheckMobiResponse
+     */
+    public function MNPLookup($params)
+    {
+        $number = $this->get_param($params, "number");
+
+        if($number === false)
+            return new CheckMobiResponse(0, ["code" => -1, "error" => "Property 'number' not found."]);
+
+        return $this->http_client->request(RequestInterface::METHOD_GET, '/lookup/mnp/'.$number, false);
+    }
+
+    /**
+     * @param array $params
+     * @return CheckMobiResponse
+     */
     public function VerifyPin($params)
     {
         return $this->http_client->request(RequestInterface::METHOD_POST, '/validation/verify', $params);
